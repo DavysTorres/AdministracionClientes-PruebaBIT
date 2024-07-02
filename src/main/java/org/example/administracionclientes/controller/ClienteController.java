@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -34,11 +33,11 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> editarCliente(@PathVariable("id") String id, @RequestBody ClienteDto dto) {
-        Cliente cliente = clienteService.editarCliente(id, dto);
-        if (cliente != null) {
-            return ResponseEntity.ok(cliente);
-        } else {
+    public ResponseEntity<Cliente> actualizarCliente(@PathVariable String id, @RequestBody Cliente cliente) {
+        try {
+            Cliente actualizado = clienteService.actualizarCliente(id, cliente);
+            return ResponseEntity.ok(actualizado);
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }

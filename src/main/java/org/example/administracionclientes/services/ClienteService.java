@@ -39,19 +39,13 @@ public class ClienteService {
         return clienteRepository.saveAll(clientes);
     }
 
-    public Cliente editarCliente(String id, ClienteDto dto){
-        Optional<Cliente> optionalCliente = clienteRepository.findById(id);
-        if(optionalCliente.isPresent()){
-            Cliente cliente = optionalCliente.get();
-            cliente.setNombre(dto.getNombre());
-            cliente.setApellido(dto.getApellido());
-            cliente.setIdentificacion(dto.getIdentificacion());
-            cliente.setEmail(dto.getEmail());
-            cliente.setTelefono(dto.getTelefono());
-            clienteRepository.save(cliente);
-            return cliente;
+    public Cliente actualizarCliente(String id, Cliente cliente) {
+        if (clienteRepository.existsById(id)) {
+            cliente.setId(id);
+            return clienteRepository.save(cliente);
+        } else {
+            throw new RuntimeException("Cliente no encontrado");
         }
-        return null;
     }
     public Cliente borrarCliente(String id){
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);
@@ -61,6 +55,5 @@ public class ClienteService {
             return cliente;
         }
         return null;
-    }
 
 }

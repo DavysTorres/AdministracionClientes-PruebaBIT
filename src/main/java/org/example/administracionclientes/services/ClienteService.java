@@ -15,17 +15,21 @@ import java.util.stream.Collectors;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
+
     @Autowired
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
-    public List<Cliente> obtenerClientes(){
+
+    public List<Cliente> obtenerClientes() {
         return clienteRepository.findAll();
     }
+
     public Cliente detallesCliente(String id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new recursoNoEncontrado("No_Found"));
     }
+
     public List<Cliente> agregarClientes(List<ClienteDto> dtos) {
         List<Cliente> clientes = dtos.stream().map(dto -> {
             Cliente cliente = new Cliente();
@@ -47,13 +51,15 @@ public class ClienteService {
             throw new RuntimeException("Cliente no encontrado");
         }
     }
-    public Cliente borrarCliente(String id){
+
+    public Cliente borrarCliente(String id) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);
-        if(optionalCliente.isPresent()){
+        if (optionalCliente.isPresent()) {
             Cliente cliente = optionalCliente.get();
             clienteRepository.delete(cliente);
             return cliente;
         }
         return null;
 
+    }
 }
